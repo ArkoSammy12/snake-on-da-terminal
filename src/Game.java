@@ -55,7 +55,7 @@ public class Game {
 
             this.screen.clearElements();
             this.screen.submitElement(apple);
-            SNAKE_HEAD.updatePositions(this);
+            SNAKE_HEAD.updatePositions();
             SNAKE_HEAD.updateDirections();
             List<Element> snakeNodes = SNAKE_HEAD.getSnakeNodes(new ArrayList<Element>());
             this.screen.submitAllElements(snakeNodes);

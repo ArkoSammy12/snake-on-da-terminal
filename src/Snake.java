@@ -52,12 +52,12 @@ public class Snake {
         return snakeNodes;
     }
 
-    public void updatePositions(Game game) {
+    public void updatePositions() {
         int[] newPos = this.direction.addPosition(pos);
         this.pos = newPos;
         this.wrapPositionIfNeeded();
         if (this.next != null) {
-            this.next.updatePositions(game);
+            this.next.updatePositions();
         }
     }
 
