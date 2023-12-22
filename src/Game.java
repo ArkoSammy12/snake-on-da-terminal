@@ -83,7 +83,7 @@ public class Game {
 
     private void onAppleEaten() {
         this.score++;
-        this.SNAKE_HEAD.addTail(SNAKE_HEAD);
+        this.SNAKE_HEAD.addTail();
             int appleX, appleY;
         do {
             appleX = this.random.nextInt(0, Screen.MAX_X);

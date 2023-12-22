@@ -1,4 +1,3 @@
-import java.lang.annotation.ElementType;
 import java.util.List;
 
 public class Snake {
@@ -15,13 +14,13 @@ public class Snake {
         this.prev = prev;
     }
 
-    public void addTail(Snake snakePart){
-        if(snakePart.next == null){
-            snakePart.next = new Snake(snakePart.direction.getOpposite().addPosition(snakePart.pos), snakePart.direction, null, snakePart);
+    public void addTail(){
+        if(this.next == null){
+            this.next = new Snake(this.direction.getOpposite().addPosition(this.pos), this.direction, null, this);
             return;
 
         }
-        addTail(snakePart.next);
+        this.next.addTail();
     }
 
     public void setDirection(Direction direction){
