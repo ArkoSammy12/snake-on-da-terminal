@@ -29,7 +29,7 @@ public class Screen {
 
     }
 
-    public Element getElementAtPosition(int x, int y){
+    public Element getElementAtIgnoringSnakeHead(int x, int y){
         for(Element element : this.elements){
             if(element.x() == x && element.y() == y && element.type() != Element.Type.SNAKE_HEAD){
                 return element;

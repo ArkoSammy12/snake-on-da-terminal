@@ -94,7 +94,7 @@ public class Snake {
 
     public CollisionType checkCollision(Game game){
         int[] pos = this.pos;
-        Element elementAtPos = game.getScreen().getElementAtPosition(pos[0], pos[1]);
+        Element elementAtPos = game.getScreen().getElementAtIgnoringSnakeHead(pos[0], pos[1]);
         if(elementAtPos == null){
             return CollisionType.NONE;
         }
