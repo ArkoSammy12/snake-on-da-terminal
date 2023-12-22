@@ -9,52 +9,73 @@ public class Snake {
     private Snake prev;
 
     public Snake(int[] pos, Direction direction, Snake next, Snake prev){
-
         this.pos = pos;
         this.direction = direction;
         this.next = next;
         this.prev = prev;
-
     }
 
     public void addTail(Snake snakePart){
         if(snakePart.next == null){
-
             snakePart.next = new Snake(snakePart.direction.getOpposite().addPosition(snakePart.pos), snakePart.direction, null, snakePart);
             return;
 
         }
-
         addTail(snakePart.next);
-
     }
 
     public void setDirection(Direction direction){
         this.direction = direction;
     }
 
-    public int[] getPosition(){
-        return this.pos;
-    }
-
     public Direction getDirection(){
         return this.direction;
     }
 
+    public int[] getPosition(){
+        return this.pos;
+    }
+
     public List<Element> getSnakeNodes(List<Element> snakeNodes){
+        snakeNodes.add(new Element(this.pos[0], this.pos[1], Element.Type.SNAKE_HEAD));
+        if(this.next != null){
+            return this.next.snakeNodesAfterHead(snakeNodes);
+        }
+        return snakeNodes;
+
+    }
+
+    private List<Element> snakeNodesAfterHead(List<Element> snakeNodes){
         snakeNodes.add(new Element(this.pos[0], this.pos[1], Element.Type.SNAKE));
         if(this.next != null){
-            this.next.getSnakeNodes(snakeNodes);
+            this.next.snakeNodesAfterHead(snakeNodes);
         }
         return snakeNodes;
     }
 
-    public void updatePositions() {
+    public void updatePositions(Game game) {
         int[] newPos = this.direction.addPosition(pos);
         this.pos = newPos;
+        this.wrapPositionIfNeeded();
         if (this.next != null) {
-            this.next.updatePositions();
+            this.next.updatePositions(game);
         }
+    }
+
+    private void wrapPositionIfNeeded(){
+        int x = this.pos[0];
+        int y = this.pos[1];
+        if(x < 0){
+            x = Screen.MAX_X - 1;
+        } else if (x >= Screen.MAX_X){
+            x = 0;
+        }
+        if(y < 0){
+            y = Screen.MAX_Y - 1;
+        } else if (y >= Screen.MAX_Y){
+            y = 0;
+        }
+        this.pos = new int[]{x, y};
     }
     
     public void updateDirections() {
@@ -63,39 +84,26 @@ public class Snake {
     }
 
     private void updateDirection(){
-
         Snake prev = this.prev;
-
         if(prev == null){
             return;
         }
         this.setDirection(prev.direction);
         prev.updateDirection();
-
     }
 
     public CollisionType checkCollision(Game game){
-
         int[] pos = this.pos;
         Element elementAtPos = game.getScreen().getElementAtPosition(pos[0], pos[1]);
-
         if(elementAtPos == null){
             return CollisionType.NONE;
         }
-
         return switch(elementAtPos.type()){
             case APPLE -> CollisionType.APPLE;
-            case SNAKE -> {
-                if(elementAtPos.x() != this.pos[0] && elementAtPos.y() != pos[1]){
-                    yield CollisionType.WALL;
-                } else {
-                    yield CollisionType.NONE;
-                }
-
-            }
-            case WALL -> CollisionType.WALL;  
+            case SNAKE -> CollisionType.WALL;
+            case WALL -> CollisionType.WALL;
+            case SNAKE_HEAD -> CollisionType.NONE;
         };
-
     }
     
     public Snake getTail() {

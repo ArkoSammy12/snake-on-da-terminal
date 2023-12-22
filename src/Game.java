@@ -54,20 +54,19 @@ public class Game {
 
             this.screen.clearElements();
             this.screen.submitElement(apple);
-            SNAKE_HEAD.updatePositions();
+            SNAKE_HEAD.updatePositions(this);
             SNAKE_HEAD.updateDirections();
             List<Element> snakeNodes = SNAKE_HEAD.getSnakeNodes(new ArrayList<Element>());
             this.screen.submitAllElements(snakeNodes);
             Snake.CollisionType collisionType = SNAKE_HEAD.checkCollision(this);
             switch(collisionType){
                 case APPLE -> onAppleEaten();
-                case WALL -> {break loop;}
+                case WALL -> {
+                    this.onGameLost();
+                    break loop;}
                 case NONE -> {}
             }
             this.screen.refreshDisplay();
-            snakeNodes.forEach(node -> System.out.println("x: " + node.x() + " y: " + node.y()));
-            System.out.println("x: " + apple.x() + " y: " + apple.y());
-            System.out.println(snakeNodes.size());
             System.out.println("Score: " + this.score); 
             this.screen.display();
             Screen.clearConsole();
@@ -76,12 +75,10 @@ public class Game {
     }
 
     public void onSnakeAttemptMove(Snake.Direction moveDirection){
-
         if(this.SNAKE_HEAD.getDirection().getOpposite() == moveDirection){
             return;
         }
         this.SNAKE_HEAD.setDirection(moveDirection);
-
     }
 
     private void onAppleEaten(){
@@ -93,6 +90,10 @@ public class Game {
         int appleY = this.random.nextInt(0, Screen.MAX_Y);
 
         this.apple = new Element(appleX, appleY, Element.Type.APPLE);
+    }
+
+    private void onGameLost(){
+        System.out.println("You lost!");
     }
 
 }
