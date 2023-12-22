@@ -31,6 +31,7 @@ public class Game {
 
         JFrame f = new JFrame();
         f.addKeyListener(new SnakeController());
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setVisible(true);
 
         int appleX = this.random.nextInt(0, Screen.MAX_X);
