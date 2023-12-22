@@ -4,7 +4,7 @@ public record Element(int x, int y, Type type) {
 
         APPLE("\u001B[31mO\u001B[0m"),
         SNAKE_HEAD("\u001B[32mU\u001B[0m"),
-        SNAKE("\u001B[32mV\u001B[0m"),
+        SNAKE_BODY("\u001B[32mV\u001B[0m"),
         WALL("#");
 
         String graphic;

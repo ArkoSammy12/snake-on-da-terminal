@@ -46,7 +46,7 @@ public class Snake {
     }
 
     private List<Element> snakeNodesAfterHead(List<Element> snakeNodes){
-        snakeNodes.add(new Element(this.pos[0], this.pos[1], Element.Type.SNAKE));
+        snakeNodes.add(new Element(this.pos[0], this.pos[1], Element.Type.SNAKE_BODY));
         if(this.next != null){
             this.next.snakeNodesAfterHead(snakeNodes);
         }
@@ -100,7 +100,7 @@ public class Snake {
         }
         return switch(elementAtPos.type()){
             case APPLE -> CollisionType.APPLE;
-            case SNAKE -> CollisionType.WALL;
+            case SNAKE_BODY -> CollisionType.WALL;
             case WALL -> CollisionType.WALL;
             case SNAKE_HEAD -> CollisionType.NONE;
         };

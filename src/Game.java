@@ -81,16 +81,27 @@ public class Game {
         this.SNAKE_HEAD.setDirection(moveDirection);
     }
 
-    private void onAppleEaten(){
-
+    private void onAppleEaten() {
         this.score++;
         this.SNAKE_HEAD.addTail(SNAKE_HEAD);
-
-        int appleX = this.random.nextInt(0, Screen.MAX_X);
-        int appleY = this.random.nextInt(0, Screen.MAX_Y);
-
+            int appleX, appleY;
+        do {
+            appleX = this.random.nextInt(0, Screen.MAX_X);
+            appleY = this.random.nextInt(0, Screen.MAX_Y);
+        } while (isSnakeOccupying(appleX, appleY));
+    
         this.apple = new Element(appleX, appleY, Element.Type.APPLE);
     }
+    
+    private boolean isSnakeOccupying(int x, int y) {
+        for (Element element : this.SNAKE_HEAD.getSnakeNodes(new ArrayList<>())) {
+            if (element.x() == x && element.y() == y) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
 
     private void onGameLost(){
         System.out.println("You lost!");
